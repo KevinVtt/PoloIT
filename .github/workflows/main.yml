@@ -12,7 +12,7 @@ jobs:
         uses: actions/setup-java@v3
         
         with: 
-          java-verison: '21'
+          java-version: '21'
           distribution: 'temurin'
 
       - name: Build with Maven
