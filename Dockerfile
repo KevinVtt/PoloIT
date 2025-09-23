@@ -1,5 +1,5 @@
 FROM amazoncorretto:21-alpine-jdk
 
-COPY target/polo-it-acelerador-0.0.1-SNAPSHOT app.jar
+COPY target/polo-it-acelerador-0.0.1-SNAPSHOT.jar app.jar
 
 ENTRYPOINT [ "java","-jar","*/app/.jar"]
