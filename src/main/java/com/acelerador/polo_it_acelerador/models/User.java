@@ -15,7 +15,7 @@ import lombok.ToString;
 
 @Entity(name = "usuarios")
 @Getter @Setter @NoArgsConstructor @ToString
-public class Usuario {
+public class User {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +26,9 @@ public class Usuario {
 
     @Column(nullable = false)
     private String lastname;
+
+    @Column(nullable = false)
+    private String role;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
