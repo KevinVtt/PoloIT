@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.acelerador.polo_it_acelerador.exceptions.UsuarioErrorGeneric;
-import com.acelerador.polo_it_acelerador.exceptions.UsuarioNotFound;
-import com.acelerador.polo_it_acelerador.exceptions.ValueNull;
-import com.acelerador.polo_it_acelerador.models.Usuario;
+import com.acelerador.polo_it_acelerador.exceptions.user.UsuarioErrorException;
+import com.acelerador.polo_it_acelerador.exceptions.user.UsuarioNotFoundException;
+import com.acelerador.polo_it_acelerador.exceptions.user.ValueNullException;
+import com.acelerador.polo_it_acelerador.models.User;
 import com.acelerador.polo_it_acelerador.repositories.IUsuario;
 import com.acelerador.polo_it_acelerador.services.interf.IUsuarioService;
 
@@ -16,7 +16,7 @@ import lombok.extern.log4j.Log4j2;
 
 @Service
 @Log4j2
-public class IUsuarioServiceImpl implements IUsuarioService<Usuario>{
+public class IUsuarioServiceImpl implements IUsuarioService{
 
     private final IUsuario usuarioRepository;
 
@@ -31,64 +31,64 @@ public class IUsuarioServiceImpl implements IUsuarioService<Usuario>{
             if(findById(id) != null){
                 usuarioRepository.deleteById(id);
             }
-        }catch(RuntimeException e){
-            throw new RuntimeException("Hubo un error inesperado");
+        }catch(UsuarioErrorException e){
+            throw new UsuarioErrorException("Hubo un error inesperado");
         }
     }
     
     @Transactional(readOnly = true)
     @Override
-    public List<Usuario> findAll() {
+    public List<User> findAll() {
         try{
             return usuarioRepository.findAll();
-        }catch(Exception e){
-            throw new RuntimeException("Error al obtener los usuarios: " + e.getMessage());
+        }catch(UsuarioErrorException e){
+            throw new UsuarioErrorException("Error al obtener los usuarios: " + e.getMessage());
         }
     }
     
     @Override
     @Transactional(readOnly = true)
-    public Usuario findById(Long id) {
+    public User findById(Long id) {
         try{
-            return usuarioRepository.findById(id).orElseThrow(() -> new UsuarioNotFound("Usuario con ID " + id + " no encontrado."));
-        }catch(UsuarioErrorGeneric e){
-            throw new RuntimeException("Error al obtener el usuario: " + e.getMessage());
+            return usuarioRepository.findById(id).orElseThrow(() -> new UsuarioNotFoundException("Usuario con ID " + id + " no encontrado."));
+        }catch(UsuarioErrorException e){
+            throw new UsuarioErrorException("Error al obtener el usuario: " + e.getMessage());
         }
     }
     
     @Override
     @Transactional
-    public Usuario save(Usuario entity) {
+    public User save(User entity) {
         try{
             validate(entity);
             return usuarioRepository.save(entity);
-        }catch(ValueNull e){
-            throw new ValueNull(e.getMessage());
-        }catch(UsuarioErrorGeneric e){
-            throw new UsuarioErrorGeneric(e.getMessage());
+        }catch(ValueNullException e){
+            throw new ValueNullException(e.getMessage());
+        }catch(UsuarioErrorException e){
+            throw new UsuarioErrorException(e.getMessage());
         }
     }
     
     @Override
     @Transactional
-    public Usuario update(Usuario entity) {
+    public User update(User entity) {
         try{
             log.info("usuario: " + entity);
             validate(entity);
             return usuarioRepository.save(entity);
-        }catch(ValueNull e){
-            throw new ValueNull(e.getMessage());
-        }catch(UsuarioErrorGeneric e){
-            throw new UsuarioErrorGeneric(e.getMessage());
+        }catch(ValueNullException e){
+            throw new ValueNullException(e.getMessage());
+        }catch(UsuarioErrorException e){
+            throw new UsuarioErrorException(e.getMessage());
         }
     }
 
-    private void validate(Usuario usuario){
+    private void validate(User usuario){
         if(usuario.getName() == null || usuario.getName().isEmpty()){
-            throw new ValueNull("El nombre no puede ser nulo o vacio");
+            throw new ValueNullException("El nombre no puede ser nulo o vacio");
         }
         if(usuario.getLastname() == null || usuario.getLastname().isEmpty()){
-            throw new ValueNull("El apellido no puede ser nulo o vacio");
+            throw new ValueNullException("El apellido no puede ser nulo o vacio");
         }
     }
 

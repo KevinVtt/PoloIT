@@ -2,10 +2,12 @@ package com.acelerador.polo_it_acelerador.services.interf;
 
 import java.util.List;
 
-public interface IUsuarioService <T>{
-    List<T> findAll();
-    T findById(Long id);
-    T save(T entity);
-    T update(T entity);
+import com.acelerador.polo_it_acelerador.models.User;
+
+public interface IUsuarioService{
+    List<User> findAll();
+    User findById(Long id);
+    User save(User entity);
+    User update(User entity);
     void deleteById(Long id);
 }
