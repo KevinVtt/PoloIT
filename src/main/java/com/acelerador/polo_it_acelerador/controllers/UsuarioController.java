@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.acelerador.polo_it_acelerador.models.Usuario;
+import com.acelerador.polo_it_acelerador.models.User;
 import com.acelerador.polo_it_acelerador.services.interf.IUsuarioService;
 
 import lombok.extern.log4j.Log4j2;
@@ -22,25 +22,24 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("/usuario")
 public class UsuarioController {
 
-    private final IUsuarioService<Usuario> usuarioService;
+    private final IUsuarioService usuarioService;
 
-    public UsuarioController(IUsuarioService<Usuario> usuarioService) {
+    public UsuarioController(IUsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Usuario>> getAllUsuarios(){
+    public ResponseEntity<List<User>> getAllUsuarios(){
         return ResponseEntity.ok(usuarioService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> getUsuarioById(@PathVariable Long id){
+    public ResponseEntity<User> getUsuarioById(@PathVariable Long id){
         return ResponseEntity.ok(usuarioService.findById(id));
     }
 
     @PostMapping("/crear")
-    public ResponseEntity<String> createUsuario(@RequestBody Usuario usuario){
-        Usuario newUsuario = usuarioService.save(usuario);
+    public ResponseEntity<String> createUsuario(@RequestBody User usuario){
+        User newUsuario = usuarioService.save(usuario);
         log.info("Usuario creado: " + newUsuario);
         if(newUsuario != null){
             return ResponseEntity.ok("Usuario creado con exito! ID: " + newUsuario.getId());
@@ -49,8 +48,8 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateUsuario(@PathVariable Long id, @RequestBody Usuario usuario){
-        Usuario updatedUsuario = usuarioService.findById(id);
+    public ResponseEntity<String> updateUsuario(@PathVariable Long id, @RequestBody User usuario){
+        User updatedUsuario = usuarioService.findById(id);
         if(updatedUsuario != null){
             usuario.setId(id);
             if(usuarioService.update(usuario) != null){
