@@ -4,6 +4,7 @@ import com.acelerador.polo_it_acelerador.controllers.UsuarioController;
 import com.acelerador.polo_it_acelerador.models.User;
 import com.acelerador.polo_it_acelerador.models.dto.request.UserRequestDTO;
 import com.acelerador.polo_it_acelerador.services.interf.IUsuarioService;
+import com.acelerador.polo_it_acelerador.util.JwtFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.DisplayName;
@@ -36,6 +37,9 @@ class UsuarioControllerTest {
 
     @MockBean
     private PasswordEncoder passwordEncoder;
+
+    @MockBean
+    private JwtFilter jwtFilter;
 
     @Autowired
     private ObjectMapper objectMapper;

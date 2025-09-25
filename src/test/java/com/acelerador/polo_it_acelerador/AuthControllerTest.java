@@ -2,6 +2,7 @@ package com.acelerador.polo_it_acelerador;
 
 import com.acelerador.polo_it_acelerador.controllers.AuthController;
 import com.acelerador.polo_it_acelerador.models.dto.request.LoginRequestDTO;
+import com.acelerador.polo_it_acelerador.util.JwtFilter;
 import com.acelerador.polo_it_acelerador.util.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -16,6 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -34,6 +36,9 @@ class AuthControllerTest {
 
     @MockBean
     private JwtUtil jwtUtil;
+    
+    @MockBean
+    private JwtFilter jwtFilter;
 
     @Test
     @DisplayName("✅ Login correcto devuelve token")
