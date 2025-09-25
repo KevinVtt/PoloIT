@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.acelerador.polo_it_acelerador.models.User;
+import com.acelerador.polo_it_acelerador.models.dto.request.UserRequestDTO;
+import com.acelerador.polo_it_acelerador.models.dto.response.UserResponseDTO;
+import com.acelerador.polo_it_acelerador.models.mappers.UserMapper;
 import com.acelerador.polo_it_acelerador.services.interf.IUsuarioService;
 
 import lombok.extern.log4j.Log4j2;
@@ -28,35 +30,27 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    public ResponseEntity<List<User>> getAllUsuarios(){
-        return ResponseEntity.ok(usuarioService.findAll());
+    @GetMapping
+    public ResponseEntity<List<UserResponseDTO>> getAllUsuarios(){
+        return ResponseEntity.ok(UserMapper.toResponseDTOList(usuarioService.findAll()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUsuarioById(@PathVariable Long id){
-        return ResponseEntity.ok(usuarioService.findById(id));
+    public ResponseEntity<UserResponseDTO> getUsuarioById(@PathVariable Long id){
+        return ResponseEntity.ok(UserMapper.toResponseDTO(usuarioService.findById(id)));
     }
 
     @PostMapping("/crear")
-    public ResponseEntity<String> createUsuario(@RequestBody User usuario){
-        User newUsuario = usuarioService.save(usuario);
-        log.info("Usuario creado: " + newUsuario);
-        if(newUsuario != null){
-            return ResponseEntity.ok("Usuario creado con exito! ID: " + newUsuario.getId());
-        }
-        return ResponseEntity.badRequest().build();
+    public ResponseEntity<UserResponseDTO> createUsuario(@RequestBody UserRequestDTO usuario){
+        User newUsuario = UserMapper.toEntity(usuario);
+        User userSave = usuarioService.save(newUsuario);
+        return ResponseEntity.ok(UserMapper.toResponseDTO(userSave));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateUsuario(@PathVariable Long id, @RequestBody User usuario){
-        User updatedUsuario = usuarioService.findById(id);
-        if(updatedUsuario != null){
-            usuario.setId(id);
-            if(usuarioService.update(usuario) != null){
-                return ResponseEntity.ok("Usuario actualizado con exito! ID: " + updatedUsuario.getId());
-            }
-        }
-        return ResponseEntity.badRequest().build();
+    public ResponseEntity<UserResponseDTO> updateUsuario(@PathVariable Long id, @RequestBody UserResponseDTO usuario){
+        User updatedUsuario = validateUser(id,usuario);
+        return ResponseEntity.ok(UserMapper.toResponseDTO(updatedUsuario));
     }
 
     @DeleteMapping("/{id}")
@@ -65,5 +59,13 @@ public class UsuarioController {
             usuarioService.deleteById(id);
         }
         return ResponseEntity.ok("Usuario eliminado con exito! ID: " + id);
+    }
+
+    private User validateUser(Long id, UserResponseDTO dto){
+        User userDb = usuarioService.findById(id);
+        userDb.setLastname((dto.lastname() != null) && !(dto.lastname().isEmpty()) ? dto.lastname() : userDb.getLastname());
+        userDb.setName((dto.name() != null) && !(dto.name().isEmpty()) ? dto.name() : userDb.getName());
+        userDb.setRole((dto.role() != null) && !(dto.role().isEmpty()) ? dto.role() : userDb.getRole());
+        return usuarioService.update(userDb);
     }
 }
