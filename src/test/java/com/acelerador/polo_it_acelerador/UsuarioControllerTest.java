@@ -38,6 +38,7 @@ class UsuarioControllerTest {
     private User getMockUser() {
         User user = new User();
         user.setId(1L);
+        user.setUsername("kvnVtt");
         user.setName("Kevin");
         user.setLastname("Vittor");
         user.setRole("ADMIN");
@@ -76,7 +77,7 @@ class UsuarioControllerTest {
     @Test
     @DisplayName("✅ Debería crear un usuario correctamente")
     void testCreateUsuarioOk() throws Exception {
-        UserRequestDTO dto = new UserRequestDTO("Juan", "Pérez");
+        UserRequestDTO dto = new UserRequestDTO("Juanpe","Juan", "Pérez","1111111","juanperez@gmail.com");
         User saved = getMockUser();
         saved.setName("Juan");
         saved.setLastname("Pérez");

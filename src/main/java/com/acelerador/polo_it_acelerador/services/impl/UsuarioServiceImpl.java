@@ -2,6 +2,11 @@ package com.acelerador.polo_it_acelerador.services.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,12 +21,14 @@ import lombok.extern.log4j.Log4j2;
 
 @Service
 @Log4j2
-public class UsuarioServiceImpl implements IUsuarioService{
+public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService{
 
     private final IUsuario usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioServiceImpl(IUsuario usuarioRepository) {
+    public UsuarioServiceImpl(IUsuario usuarioRepository,PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -61,6 +68,7 @@ public class UsuarioServiceImpl implements IUsuarioService{
     public User save(User entity) {
         try{
             validate(entity);
+            entity.setPassword(passwordEncoder.encode(entity.getPassword()));
             return usuarioRepository.save(entity);
         }catch(ValueNullException e){
             throw new ValueNullException(e.getMessage());
@@ -90,7 +98,29 @@ public class UsuarioServiceImpl implements IUsuarioService{
         if(usuario.getLastname() == null || usuario.getLastname().isEmpty()){
             throw new ValueNullException("El apellido no puede ser nulo o vacio");
         }
+        if(usuario.getPassword() == null || usuario.getPassword().isEmpty()){
+            throw new ValueNullException("La contraseña no puede ser nulo o vacio");
+        }
+        if(usuario.getEmail() == null || usuario.getEmail().isEmpty()){
+            throw new ValueNullException("La contraseña no puede ser nulo o vacio");
+        }
         usuario.setRole("ADMIN");
     }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        
+        // Buscamos el usuario en la base de datos
+        User usuario = usuarioRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+
+        return org.springframework.security.core.userdetails.User
+                .builder()
+                .username(usuario.getUsername())
+                .password(usuario.getPassword())
+                .roles(usuario.getRole())
+                .build();
+    }
+
+    
 
 }
