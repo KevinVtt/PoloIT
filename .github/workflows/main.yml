@@ -17,5 +17,5 @@ jobs:
           distribution: 'temurin'
 
       - name: Ejecutar tests unitarios
-        run: mvn -B -Dtest=TicketTest test
+        run: mvn test
 
