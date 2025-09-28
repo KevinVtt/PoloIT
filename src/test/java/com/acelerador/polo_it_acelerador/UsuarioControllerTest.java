@@ -4,6 +4,7 @@ import com.acelerador.polo_it_acelerador.controllers.UsuarioController;
 import com.acelerador.polo_it_acelerador.models.User;
 import com.acelerador.polo_it_acelerador.models.dto.request.UserRequestDTO;
 import com.acelerador.polo_it_acelerador.services.interf.IUsuarioService;
+import com.acelerador.polo_it_acelerador.util.JwtFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.DisplayName;
@@ -12,11 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -32,12 +35,19 @@ class UsuarioControllerTest {
     @MockBean
     private IUsuarioService usuarioService;
 
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+
+    @MockBean
+    private JwtFilter jwtFilter;
+
     @Autowired
     private ObjectMapper objectMapper;
 
     private User getMockUser() {
         User user = new User();
         user.setId(1L);
+        user.setUsername("kvnVtt");
         user.setName("Kevin");
         user.setLastname("Vittor");
         user.setRole("ADMIN");
@@ -76,7 +86,7 @@ class UsuarioControllerTest {
     @Test
     @DisplayName("✅ Debería crear un usuario correctamente")
     void testCreateUsuarioOk() throws Exception {
-        UserRequestDTO dto = new UserRequestDTO("Juan", "Pérez");
+        UserRequestDTO dto = new UserRequestDTO("Juanpe","Juan", "Pérez","1111111","juanperez@gmail.com");
         User saved = getMockUser();
         saved.setName("Juan");
         saved.setLastname("Pérez");

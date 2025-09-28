@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -63,5 +64,13 @@ public class HandlerException {
         errors.put("error", ex.getMessage());
         errors.put("time", LocalDateTime.now().toString());
         return ResponseEntity.status(404).body(errors);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<HashMap<String,String>> handleBadCredentials(BadCredentialsException ex){
+        HashMap<String,String> errors = new HashMap<>();
+        errors.put("error", ex.getMessage());
+        errors.put("time", LocalDateTime.now().toString());
+        return ResponseEntity.status(403).body(errors);
     }
 }

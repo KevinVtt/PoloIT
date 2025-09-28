@@ -22,6 +22,9 @@ public class User {
     private Long id;
 
     @Column(nullable = false)
+    private String username;
+    
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
@@ -29,6 +32,12 @@ public class User {
 
     @Column(nullable = false)
     private String role;
+    
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

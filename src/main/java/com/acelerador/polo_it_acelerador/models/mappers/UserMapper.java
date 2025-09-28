@@ -12,8 +12,11 @@ public class UserMapper {
     // Convierte DTO de request -> Entidad
     public static User toEntity(UserRequestDTO dto) {
         User user = new User();
+        user.setUsername(dto.username());
         user.setName(dto.name());
         user.setLastname(dto.lastname());
+        user.setEmail(dto.email());
+        user.setPassword(dto.password());
         return user;
     }
 
@@ -21,11 +24,13 @@ public class UserMapper {
     public static UserResponseDTO toResponseDTO(User user) {
         return new UserResponseDTO(
                 user.getId(),
+                user.getUsername(),
                 user.getName(),
                 user.getLastname(),
                 user.getRole(),
                 user.getCreatedAt(),
-                user.getUpdatedAt()
+                user.getUpdatedAt(),
+                user.getEmail()
         );
     }
 
