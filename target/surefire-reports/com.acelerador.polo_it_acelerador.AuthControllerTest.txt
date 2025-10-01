@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.acelerador.polo_it_acelerador.AuthControllerTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 4.375 s <<< FAILURE! - in com.acelerador.polo_it_acelerador.AuthControllerTest
-com.acelerador.polo_it_acelerador.AuthControllerTest.testLoginSuccess  Time elapsed: 0.232 s  <<< FAILURE!
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 6.031 s <<< FAILURE! - in com.acelerador.polo_it_acelerador.AuthControllerTest
+com.acelerador.polo_it_acelerador.AuthControllerTest.testLoginSuccess  Time elapsed: 0.211 s  <<< FAILURE!
 java.lang.AssertionError: Status expected:<200> but was:<403>
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)

@@ -32,7 +32,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/auth/**").permitAll()
                     .requestMatchers("/ticket").hasRole("ADMIN")        // solo admins pueden ver
-                    .requestMatchers("/ticket/crear").permitAll()  
+                    .requestMatchers("/ticket/crear").permitAll()
+                    .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                     .anyRequest().permitAll()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

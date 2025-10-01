@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.acelerador.polo_it_acelerador.UsuarioControllerTest
 -------------------------------------------------------------------------------
-Tests run: 6, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.607 s <<< FAILURE! - in com.acelerador.polo_it_acelerador.UsuarioControllerTest
-com.acelerador.polo_it_acelerador.UsuarioControllerTest.testCreateUsuarioOk  Time elapsed: 0.017 s  <<< FAILURE!
+Tests run: 6, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.663 s <<< FAILURE! - in com.acelerador.polo_it_acelerador.UsuarioControllerTest
+com.acelerador.polo_it_acelerador.UsuarioControllerTest.testCreateUsuarioOk  Time elapsed: 0.014 s  <<< FAILURE!
 java.lang.AssertionError: Status expected:<200> but was:<403>
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
@@ -13,7 +13,7 @@ java.lang.AssertionError: Status expected:<200> but was:<403>
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 
-com.acelerador.polo_it_acelerador.UsuarioControllerTest.testGetAllUsuariosOk  Time elapsed: 0.023 s  <<< FAILURE!
+com.acelerador.polo_it_acelerador.UsuarioControllerTest.testGetAllUsuariosOk  Time elapsed: 0.029 s  <<< FAILURE!
 java.lang.AssertionError: Status expected:<200> but was:<401>
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
@@ -24,7 +24,7 @@ java.lang.AssertionError: Status expected:<200> but was:<401>
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 
-com.acelerador.polo_it_acelerador.UsuarioControllerTest.testDeleteUsuarioOk  Time elapsed: 0.025 s  <<< FAILURE!
+com.acelerador.polo_it_acelerador.UsuarioControllerTest.testDeleteUsuarioOk  Time elapsed: 0.016 s  <<< FAILURE!
 java.lang.AssertionError: Status expected:<200> but was:<403>
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
