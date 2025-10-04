@@ -1,11 +1,15 @@
 package com.acelerador.polo_it_acelerador.models;
 
 import java.time.LocalDateTime;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import lombok.Getter;
@@ -13,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity(name = "usuarios")
+@Entity(name = "user")
 @Getter @Setter @NoArgsConstructor @ToString
 public class User {
     
@@ -21,20 +25,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String username;
-    
-    @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
-    private String lastname;
 
     @Column(nullable = false)
     private String role;
-    
-    @Column(nullable = false)
-    private String email;
 
     @Column(nullable = false)
     private String password;
@@ -44,6 +39,10 @@ public class User {
     
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "contact_id", referencedColumnName = "id")
+    private Contact contact;
 
     @PrePersist
     protected void onCreate() {
@@ -55,5 +54,4 @@ public class User {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
-    
 }

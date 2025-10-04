@@ -1,6 +1,7 @@
 package com.acelerador.polo_it_acelerador.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.acelerador.polo_it_acelerador.models.User;
 import com.acelerador.polo_it_acelerador.models.dto.request.UserRequestDTO;
@@ -61,10 +63,28 @@ public class UsuarioController {
         return ResponseEntity.ok("Usuario eliminado con exito! ID: " + id);
     }
 
+    @PostMapping("/reset-password/request")
+    public ResponseEntity<String> requestResetPassword(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        usuarioService.requestResetPassword(email);
+        return ResponseEntity.ok("Si el correo existe, recibirás instrucciones para restablecer tu contraseña.");
+    }
+
+    @PostMapping("/reset-password/confirm")
+    public ResponseEntity<String> resetPassword(@RequestParam String token,@RequestBody Map<String, String> passwordJson) {
+        try {
+            String newPassword = passwordJson.get("newPassword");
+            usuarioService.resetPassword(token, newPassword);
+            return ResponseEntity.ok("Contraseña actualizada exitosamente");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private User validateUser(Long id, UserResponseDTO dto){
         User userDb = usuarioService.findById(id);
-        userDb.setLastname((dto.lastname() != null) && !(dto.lastname().isEmpty()) ? dto.lastname() : userDb.getLastname());
-        userDb.setName((dto.name() != null) && !(dto.name().isEmpty()) ? dto.name() : userDb.getName());
+        userDb.getContact().setLastname((dto.contact().lastname() != null) && !(dto.contact().lastname().isEmpty()) ? dto.contact().lastname() : userDb.getContact().getLastname());
+        userDb.getContact().setName((dto.contact().name() != null) && !(dto.contact().name().isEmpty()) ? dto.contact().name() : userDb.getContact().getName());
         userDb.setRole((dto.role() != null) && !(dto.role().isEmpty()) ? dto.role() : userDb.getRole());
         return usuarioService.update(userDb);
     }

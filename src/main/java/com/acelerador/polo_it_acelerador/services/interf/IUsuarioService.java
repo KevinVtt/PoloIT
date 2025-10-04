@@ -10,4 +10,6 @@ public interface IUsuarioService{
     User save(User entity);
     User update(User entity);
     void deleteById(Long id);
+    void requestResetPassword(String email);
+    void resetPassword(String token, String newPassword);
 }

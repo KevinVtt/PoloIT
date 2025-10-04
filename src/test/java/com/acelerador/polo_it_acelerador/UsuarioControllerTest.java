@@ -1,7 +1,9 @@
 package com.acelerador.polo_it_acelerador;
 
 import com.acelerador.polo_it_acelerador.controllers.UsuarioController;
+import com.acelerador.polo_it_acelerador.models.Contact;
 import com.acelerador.polo_it_acelerador.models.User;
+import com.acelerador.polo_it_acelerador.models.dto.request.ContactRequestDTO;
 import com.acelerador.polo_it_acelerador.models.dto.request.UserRequestDTO;
 import com.acelerador.polo_it_acelerador.services.interf.IUsuarioService;
 import com.acelerador.polo_it_acelerador.util.JwtFilter;
@@ -46,10 +48,12 @@ class UsuarioControllerTest {
 
     private User getMockUser() {
         User user = new User();
+        Contact contact = new Contact();
+        user.setContact(contact);
         user.setId(1L);
         user.setUsername("kvnVtt");
-        user.setName("Kevin");
-        user.setLastname("Vittor");
+        user.getContact().setName("Kevin");
+        user.getContact().setLastname("Vittor");
         user.setRole("ADMIN");
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
@@ -86,10 +90,11 @@ class UsuarioControllerTest {
     @Test
     @DisplayName("✅ Debería crear un usuario correctamente")
     void testCreateUsuarioOk() throws Exception {
-        UserRequestDTO dto = new UserRequestDTO("Juanpe","Juan", "Pérez","1111111","juanperez@gmail.com");
+        ContactRequestDTO contactRequestDTO = new ContactRequestDTO("Juan", "Pérez","juanperez@gmail.com");
+        UserRequestDTO dto = new UserRequestDTO("Juanpe","1111111",contactRequestDTO);
         User saved = getMockUser();
-        saved.setName("Juan");
-        saved.setLastname("Pérez");
+        saved.getContact().setName("Juan");
+        saved.getContact().setLastname("Pérez");
         saved.setRole("USER");
 
         when(usuarioService.save(any(User.class))).thenReturn(saved);

@@ -3,35 +3,47 @@ package com.acelerador.polo_it_acelerador.models.mappers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.acelerador.polo_it_acelerador.models.Contact;
 import com.acelerador.polo_it_acelerador.models.User;
 import com.acelerador.polo_it_acelerador.models.dto.request.UserRequestDTO;
+import com.acelerador.polo_it_acelerador.models.dto.response.ContactResponseDTO;
 import com.acelerador.polo_it_acelerador.models.dto.response.UserResponseDTO;
 
 public class UserMapper {
 
-    // Convierte DTO de request -> Entidad
     public static User toEntity(UserRequestDTO dto) {
         User user = new User();
         user.setUsername(dto.username());
-        user.setName(dto.name());
-        user.setLastname(dto.lastname());
-        user.setEmail(dto.email());
         user.setPassword(dto.password());
+
+        if (dto.contact() != null) {
+            Contact contact = new Contact();
+            contact.setName(dto.contact().name());
+            contact.setLastname(dto.contact().lastname());
+            contact.setEmail(dto.contact().email());
+            user.setContact(contact);
+        }
+
         return user;
     }
 
-    // Convierte Entidad -> DTO de response
     public static UserResponseDTO toResponseDTO(User user) {
+        ContactResponseDTO contactDTO = null;
+        if (user.getContact() != null) {
+            contactDTO = new ContactResponseDTO(
+                    user.getContact().getName(),
+                    user.getContact().getLastname(),
+                    user.getContact().getEmail());
+        }
+
         return new UserResponseDTO(
                 user.getId(),
                 user.getUsername(),
-                user.getName(),
-                user.getLastname(),
                 user.getRole(),
                 user.getCreatedAt(),
                 user.getUpdatedAt(),
-                user.getEmail()
-        );
+                contactDTO
+                );
     }
 
     // Lista de entidades -> lista de responseDTO
