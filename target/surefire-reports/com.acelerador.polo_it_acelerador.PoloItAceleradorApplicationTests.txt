@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.acelerador.polo_it_acelerador.PoloItAceleradorApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 14.349 s - in com.acelerador.polo_it_acelerador.PoloItAceleradorApplicationTests
