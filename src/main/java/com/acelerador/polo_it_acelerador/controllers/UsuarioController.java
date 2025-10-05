@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.acelerador.polo_it_acelerador.models.User;
+import com.acelerador.polo_it_acelerador.models.dto.request.PasswordResetRequestDTO;
 import com.acelerador.polo_it_acelerador.models.dto.request.UserRequestDTO;
+import com.acelerador.polo_it_acelerador.models.dto.response.PasswordResetResponseDTO;
 import com.acelerador.polo_it_acelerador.models.dto.response.UserResponseDTO;
 import com.acelerador.polo_it_acelerador.models.mappers.UserMapper;
 import com.acelerador.polo_it_acelerador.services.interf.IUsuarioService;
@@ -64,17 +66,15 @@ public class UsuarioController {
     }
 
     @PostMapping("/reset-password/request")
-    public ResponseEntity<String> requestResetPassword(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
-        usuarioService.requestResetPassword(email);
+    public ResponseEntity<String> requestResetPassword(@RequestBody PasswordResetRequestDTO request) {
+        usuarioService.requestResetPassword(request.email());
         return ResponseEntity.ok("Si el correo existe, recibirás instrucciones para restablecer tu contraseña.");
     }
 
     @PostMapping("/reset-password/confirm")
-    public ResponseEntity<String> resetPassword(@RequestParam String token,@RequestBody Map<String, String> passwordJson) {
+    public ResponseEntity<String> resetPassword(@RequestParam String token,@RequestBody PasswordResetResponseDTO newPassword) {
         try {
-            String newPassword = passwordJson.get("newPassword");
-            usuarioService.resetPassword(token, newPassword);
+            usuarioService.resetPassword(token, newPassword.password());
             return ResponseEntity.ok("Contraseña actualizada exitosamente");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

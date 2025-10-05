@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.acelerador.polo_it_acelerador.exceptions.email.EmailNotFoundException;
 import com.acelerador.polo_it_acelerador.exceptions.user.UsuarioErrorException;
 import com.acelerador.polo_it_acelerador.exceptions.user.UsuarioNotFoundException;
 import com.acelerador.polo_it_acelerador.exceptions.user.ValueNullException;
@@ -141,14 +142,16 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
             tokenRepository.save(resetToken);
 
             // Enviar email con el token
-            String resetLink = "http://localhost:3000/usuario/reset-password/confirm?token=" + token;
+            String resetLink = "http://api-backend-l066.onrender.com/usuario/reset-password/confirm?token=" + token;
             emailService.enviarEmailRecuperacion(user.getContact().getEmail(), user.getContact().getName(), resetLink);
 
             log.info("Token de recuperación generado para: {}", email);
 
+        
+        }catch (EmailNotFoundException e) {
+            throw new EmailNotFoundException(e.getMessage());
         } catch (Exception e) {
             log.error("Error al procesar solicitud de reset password: {}", e.getMessage());
-            // No revelar si el email existe o no por seguridad
         }
     }
 
@@ -200,5 +203,17 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
                 .roles(usuario.getRole())
                 .build();
     }
+
+    @Override
+    public User findByEmail(String eamil) {
+        try{
+            return usuarioRepository.findByEmail(eamil)
+                    .orElseThrow(() -> new UsuarioNotFoundException("Usuario con email " + eamil + " no encontrado."));
+        } catch (UsuarioErrorException e) {
+            throw new UsuarioErrorException("Error al obtener el usuario: " + e.getMessage());
+        }
+    }
+
+    
 
 }

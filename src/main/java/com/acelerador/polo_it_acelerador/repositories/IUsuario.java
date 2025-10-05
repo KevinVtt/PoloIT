@@ -11,6 +11,6 @@ import com.acelerador.polo_it_acelerador.models.User;
 @Repository
 public interface IUsuario extends JpaRepository<User,Long> {
     Optional<User> findByUsername(String username);
-    @Query("SELECT u FROM user u WHERE u.contact.email = :email")
+    @Query("SELECT u FROM app_user u WHERE u.contact.email = :email")
     Optional<User> findByEmail(String email);
 }

@@ -7,6 +7,7 @@ import com.acelerador.polo_it_acelerador.models.User;
 public interface IUsuarioService{
     List<User> findAll();
     User findById(Long id);
+    User findByEmail(String eamil);
     User save(User entity);
     User update(User entity);
     void deleteById(Long id);

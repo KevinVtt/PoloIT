@@ -8,6 +8,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.acelerador.polo_it_acelerador.exceptions.email.EmailNotFoundException;
 import com.acelerador.polo_it_acelerador.exceptions.ticket.TicketAlreadyExistsException;
 import com.acelerador.polo_it_acelerador.exceptions.ticket.TicketErrorException;
 import com.acelerador.polo_it_acelerador.exceptions.ticket.TicketNotFoundException;
@@ -72,5 +73,13 @@ public class HandlerException {
         errors.put("error", ex.getMessage());
         errors.put("time", LocalDateTime.now().toString());
         return ResponseEntity.status(403).body(errors);
+    }
+
+    @ExceptionHandler(EmailNotFoundException.class)
+    public ResponseEntity<HashMap<String,String>> handleEmailNotFound(EmailNotFoundException ex){
+        HashMap<String,String> errors = new HashMap<>();
+        errors.put("error", ex.getMessage());
+        errors.put("time", LocalDateTime.now().toString());
+        return ResponseEntity.status(404).body(errors);
     }
 }
